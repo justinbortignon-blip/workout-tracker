@@ -6,57 +6,59 @@
     <title>FitTrack</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style> body {font-family: system-ui;} .tab-content {display:none;} .tab-content.active {display:block;} </style>
+    <style>
+        body {font-family: system-ui;}
+        .tab-content {display:none;}
+        .tab-content.active {display:block;}
+    </style>
 </head>
 <body class="bg-gray-950 text-gray-100">
 <div class="max-w-6xl mx-auto p-6">
     <h1 class="text-4xl font-bold text-green-500 mb-8">FitTrack</h1>
     
     <div class="flex gap-4 mb-8 border-b pb-4">
-        <button onclick="showTab('dashboard')" class="tab-btn active px-6 py-3 rounded-2xl bg-gray-900">Dashboard</button>
+        <button onclick="showTab('dashboard')" class="tab-btn px-6 py-3 rounded-2xl bg-gray-900">Dashboard</button>
         <button onclick="showTab('workouts')" class="tab-btn px-6 py-3 rounded-2xl bg-gray-900">Workouts</button>
         <button onclick="showTab('diet')" class="tab-btn px-6 py-3 rounded-2xl bg-gray-900">Diet</button>
         <button onclick="showTab('foods')" class="tab-btn px-6 py-3 rounded-2xl bg-gray-900">Foods</button>
     </div>
 
-    <div id="dashboard" class="tab-content active">
-        <h2 class="text-3xl font-bold">Welcome! Everything saves in your browser.</h2>
+    <!-- Workouts -->
+    <div id="workouts" class="tab-content active">
+        <h2 class="text-2xl font-bold mb-6">Log Workout</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <input id="exName" placeholder="Exercise" class="bg-gray-900 p-4 rounded-2xl">
+            <input id="exWeight" placeholder="Weight (kg)" type="number" class="bg-gray-900 p-4 rounded-2xl">
+            <input id="exReps" placeholder="Reps" type="number" class="bg-gray-900 p-4 rounded-2xl">
+            <input id="exSets" placeholder="Sets" type="number" class="bg-gray-900 p-4 rounded-2xl">
+        </div>
+        <button onclick="logWorkout()" class="mt-6 bg-green-600 px-8 py-4 rounded-2xl w-full">Log Set</button>
+        <div id="workoutHistory" class="mt-10"></div>
     </div>
 
-    <div id="workouts" class="tab-content">
-        <h2 class="text-2xl font-bold mb-4">Log Workout</h2>
-        <input id="exercise" placeholder="Exercise name" class="bg-gray-900 p-4 rounded-2xl w-full mb-4">
-        <button onclick="logWorkout()" class="bg-green-600 px-8 py-4 rounded-2xl">Log Workout</button>
-    </div>
-
+    <!-- Diet -->
     <div id="diet" class="tab-content">
-        <h2 class="text-2xl font-bold mb-4">Log Meal</h2>
-        <p class="text-gray-400">Calories and macros will be added here.</p>
+        <h2 class="text-2xl font-bold mb-6">Log Meal</h2>
+        <p class="text-gray-400">Basic meal logging (expand later).</p>
     </div>
 
+    <!-- Foods -->
     <div id="foods" class="tab-content">
-        <h2 class="text-2xl font-bold mb-4">Custom Foods</h2>
-        <button onclick="addCustomFood()" class="bg-green-600 px-8 py-4 rounded-2xl">+ Add Food from Packet</button>
+        <h2 class="text-2xl font-bold mb-6">My Foods</h2>
+        <button onclick="addCustomFood()" class="bg-green-600 px-8 py-4 rounded-2xl">+ Add New Food</button>
+        <div id="foodsList" class="mt-6"></div>
     </div>
 
     <script>
+        let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+        let customFoods = JSON.parse(localStorage.getItem('customFoods')) || [];
+
         function showTab(id) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            if (id === 'workouts') renderWorkouts();
+            if (id === 'foods') renderFoods();
         }
 
         function logWorkout() {
-            const ex = document.getElementById('exercise').value || "Workout";
-            alert("Logged " + ex + " ✓");
-        }
-
-        function addCustomFood() {
-            const name = prompt("Food name?");
-            if (name) alert(name + " added to database!");
-        }
-
-        window.onload = () => showTab('dashboard');
-    </script>
-</div>
-</body>
-</html>
+            const name = document.getElementById('ex
