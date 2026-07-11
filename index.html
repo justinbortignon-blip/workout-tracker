@@ -3,57 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitTrack - Workout & Diet Tracker</title>
+    <title>FitTrack</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        body { font-family: system-ui, sans-serif; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-    </style>
+    <style> body {font-family: system-ui;} .tab-content {display:none;} .tab-content.active {display:block;} </style>
 </head>
-<body class="bg-gray-950 text-gray-100 min-h-screen">
-    <div class="max-w-6xl mx-auto p-6">
-        <h1 class="text-4xl font-bold text-green-500 mb-8">FitTrack</h1>
-        
-        <!-- Tabs -->
-        <div class="flex gap-4 mb-8 border-b border-gray-800 pb-4">
-            <button onclick="showTab('dashboard')" class="tab-btn active px-6 py-3 rounded-2xl bg-gray-900">Dashboard</button>
-            <button onclick="showTab('workouts')" class="tab-btn px-6 py-3 rounded-2xl bg-gray-900">Workouts</button>
-            <button onclick="showTab('diet')" class="tab-btn px-6 py-3 rounded-2xl bg-gray-900">Diet</button>
-            <button onclick="showTab('foods')" class="tab-btn px-6 py-3 rounded-2xl bg-gray-900">Foods</button>
-        </div>
-
-        <!-- Dashboard -->
-        <div id="dashboard" class="tab-content active">
-            <h2 class="text-2xl font-bold mb-4">Welcome back!</h2>
-            <p class="text-gray-400">Your progress is saved automatically.</p>
-        </div>
-
-        <!-- Foods Tab -->
-        <div id="foods" class="tab-content">
-            <h2 class="text-2xl font-bold mb-6">Custom Foods</h2>
-            <button onclick="addCustomFood()" class="bg-green-600 px-6 py-3 rounded-2xl">+ Add Food from Packet</button>
-            <div id="foodsList" class="mt-6"></div>
-        </div>
-
-        <script>
-            function showTab(id) {
-                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-                document.getElementById(id).classList.add('active');
-            }
-
-            function addCustomFood() {
-                const name = prompt("Food name?");
-                if (!name) return;
-                const cal = parseFloat(prompt("Calories per 100g?")) || 0;
-                alert(`Added ${name} (${cal} cal/100g)`);
-            }
-
-            // Load on start
-            window.onload = () => showTab('dashboard');
-        </script>
+<body class="bg-gray-950 text-gray-100">
+<div class="max-w-6xl mx-auto p-6">
+    <h1 class="text-4xl font-bold text-green-500 mb-8">FitTrack</h1>
+    
+    <div class="flex gap-4 mb-8">
+        <button onclick="showTab('dashboard')" class="tab-btn active px-6 py-3 rounded-2xl bg-gray-900">Dashboard</button>
+        <button onclick="showTab('workouts')" class="tab-btn px-6 py-3 rounded-2xl bg-gray-900">Workouts</button>
+        <button onclick="showTab('diet')" class="tab-btn px-6 py-3 rounded-2xl bg-gray-900">Diet</button>
+        <button onclick="showTab('foods')" class="tab-btn px-6 py-3 rounded-2xl bg-gray-900">Foods</button>
     </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="tab-content active">
+        <h2 class="text-2xl font-bold">Dashboard</h2>
+        <p class="text-gray-400">Everything saves automatically in your browser.</p>
+    </div>
+
+    <!-- WORKOUTS -->
+    <div id="workouts" class="tab-content">
+        <h2 class="text-2xl font-bold mb-4">Log Workout</h2>
+        <p class="text-gray-400">Add exercises, sets, reps, weight here (basic version).</p>
+        <!-- You can expand this -->
+    </div>
+
+    <!-- DIET -->
+    <div id="diet" class="tab-content">
+        <h2 class="text-2xl font-bold mb-4">Log Meal</h2>
+        <p class="text-gray-400">Log calories, protein, etc.</p>
+    </div>
+
+    <!-- FOODS -->
+    <div id="foods" class="tab-content">
+        <h2 class="text-2xl font-bold mb-6">Custom Foods</h2>
+        <button onclick="addCustomFood()" class="bg-green-600 px-6 py-3 rounded-2xl mb-6">+ Add New Food</button>
+        <div id="foodsList"></div>
+    </div>
+
+    <script>
+        function showTab(id) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function addCustomFood() {
+            const name = prompt("Food name?");
+            if (!name) return;
+            const cal = parseFloat(prompt("Calories per 100g?")) || 0;
+            const prot = parseFloat(prompt("Protein g per 100g?")) || 0;
+            alert(`Added ${name}`);
+            renderFoods();
+        }
+
+        function renderFoods() {
+            document.getElementById('foodsList').innerHTML = '<p class="text-gray-400">Custom foods will appear here.</p>';
+        }
+
+        window.onload = () => showTab('dashboard');
+    </script>
+</div>
 </body>
 </html>
